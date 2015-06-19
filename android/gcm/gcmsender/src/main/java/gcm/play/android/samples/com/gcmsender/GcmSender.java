@@ -17,7 +17,6 @@
 package gcm.play.android.samples.com.gcmsender;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -28,7 +27,8 @@ import java.net.URL;
 
 public class GcmSender {
 
-    public static final String API_KEY = "API_KEY";
+    #
+    public static final String API_KEY = "AIzaSyCnfRr0WsDtqwLR5NJghShFDqv9Oesinv0";
 
     public static void main(String[] args) {
         if (args.length < 1 || args.length > 2 || args[0] == null) {
