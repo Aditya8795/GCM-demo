@@ -27,7 +27,14 @@ import java.net.URL;
 
 public class GcmSender {
 
-    #
+    /*
+     I got both the API_KEY and the sender ID from the developer's console
+    Server API key:
+        AIzaSyCnfRr0WsDtqwLR5NJghShFDqv9Oesinv0
+    Sender ID:
+        244375012094
+    */
+
     public static final String API_KEY = "AIzaSyCnfRr0WsDtqwLR5NJghShFDqv9Oesinv0";
 
     public static void main(String[] args) {
