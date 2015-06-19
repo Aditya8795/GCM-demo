@@ -39,7 +39,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
  This token is used to identify the instance of the quickstart running on your device.
  because hey, there must a lot of people out there using the SAME quickstart app.
 
- For most of the initialization's just find its occurrences to understand its purpose.
+ For most of the initializations just find its occurrences to understand its purpose.
 */
 
 public class MainActivity extends AppCompatActivity {

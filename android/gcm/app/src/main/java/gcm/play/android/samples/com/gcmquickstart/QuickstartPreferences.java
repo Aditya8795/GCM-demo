@@ -16,6 +16,7 @@
 
 package gcm.play.android.samples.com.gcmquickstart;
 
+// we use these "keys" to refer to boolean sharedPreferences values
 public class QuickstartPreferences {
 
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";

@@ -29,12 +29,22 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+/*
+    As we can see this service being called, it is called from line - 83 MainActivity
+    now what is this IntentService, basically we offload the whole registration task
+    from an application's main thread to a worker thread.
+    Once started, a service can run in the background indefinitely, even if the component
+    that started it is destroyed -- that's one of the reasons why we use this.
+
+*/
+
 public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
 
     public RegistrationIntentService() {
+        // used to name the worker thread
         super(TAG);
     }
 
@@ -45,7 +55,19 @@ public class RegistrationIntentService extends IntentService {
         try {
             // In the (unlikely) event that multiple refresh operations occur simultaneously,
             // ensure that they are processed sequentially.
+            /*
+             A synchronized block in Java is synchronized on some object, here its TAG
+             All synchronized blocks synchronized on the same object can only have one thread
+             executing inside them at the same time. All other threads attempting to enter the
+             synchronized block are blocked until the thread inside the synchronized block
+             exits the block.
+            */
             synchronized (TAG) {
+                /*
+                    A sender ID is a project number acquired from the API console, as described in Getting Started.
+                    I have NO CLUE (maybe just that its some sort of ah no idea) TODO what is GoogleCloudMessaging.INSTANCE_ID_SCOPE
+
+                */
                 // [START register_for_gcm]
                 // Initially this call goes out to the network to retrieve the token, subsequent calls
                 // are local.
@@ -56,6 +78,8 @@ public class RegistrationIntentService extends IntentService {
                 // [END get_token]
                 Log.i(TAG, "GCM Registration Token: " + token);
 
+                // Now that we have this token that identifies the device we pass it on to OUR server
+                // so that the server can tell google to whom all the notification should go to
                 // TODO: Implement this method to send any registration to your app's servers.
                 sendRegistrationToServer(token);
 
@@ -74,6 +98,7 @@ public class RegistrationIntentService extends IntentService {
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         }
+
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(QuickstartPreferences.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
@@ -89,8 +114,11 @@ public class RegistrationIntentService extends IntentService {
      */
     private void sendRegistrationToServer(String token) {
         // Add custom implementation, as needed.
+        //TODO code goes here :p
     }
 
+    // In our case its just the global topic, when we make a app using
+    // GCM topics is THE WAY to go when you want to send the same message to multiple people
     /**
      * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
      *

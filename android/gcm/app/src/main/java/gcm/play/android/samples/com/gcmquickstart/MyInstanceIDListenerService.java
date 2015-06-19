@@ -17,12 +17,15 @@
 package gcm.play.android.samples.com.gcmquickstart;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.iid.InstanceID;
 import com.google.android.gms.iid.InstanceIDListenerService;
+
+// This class is not for us to edit, it deals with cases were the the Token is no longer valid,
+// A good example would be if you restore a backup of a app which was uninstalled.
+// So use Canonical IDs to solve such EDGE CASES. This might happen because you registered
+// with several IDs for the same device, or because the GCM server didn't get the unregister()
+// call when the app was uninstalled.
 
 public class MyInstanceIDListenerService extends InstanceIDListenerService {
 
@@ -39,6 +42,7 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
         // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
+        Log.i(TAG, "Fetched Updated ID token");
     }
     // [END refresh_token]
 }
