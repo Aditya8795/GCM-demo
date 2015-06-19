@@ -25,6 +25,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+// this is a separate module in this project which is only used to send a notification to the device
+// which has the app module of this same project installed.
+
 public class GcmSender {
 
     /*
@@ -38,6 +41,7 @@ public class GcmSender {
     public static final String API_KEY = "AIzaSyCnfRr0WsDtqwLR5NJghShFDqv9Oesinv0";
 
     public static void main(String[] args) {
+        // This is shown if you try passing improper inputs as argument to Pargs (empty messages, null etc)
         if (args.length < 1 || args.length > 2 || args[0] == null) {
             System.err.println("usage: ./gradlew run -Pargs=\"MESSAGE[,DEVICE_TOKEN]\"");
             System.err.println("");
@@ -54,6 +58,7 @@ public class GcmSender {
                     "On Linux/Mac: ./gradlew run -Pargs=\"<Your_Message>,<Your_Token>\"");
             System.exit(1);
         }
+        // Now the following is what the Server Implementation is supposed to do
         try {
             // Prepare JSON containing the GCM message content. What to send and where to send.
             JSONObject jGcmData = new JSONObject();
@@ -63,6 +68,8 @@ public class GcmSender {
             if (args.length > 1 && args[1] != null) {
                 jGcmData.put("to", args[1].trim());
             } else {
+                // as we haven't specified the destination, it goes to all devices registered under
+                // the particular API
                 jGcmData.put("to", "/topics/global");
             }
             // What to send in GCM message.
