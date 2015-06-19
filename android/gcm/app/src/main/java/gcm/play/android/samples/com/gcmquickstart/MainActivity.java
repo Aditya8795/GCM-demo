@@ -32,6 +32,16 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+// As we can see from the manifest, both the MAIN and LAUNCHER intent filter is set to this activity
+/*
+ SO whats going to happen FIRST, inorder to get any sort of notifications from google we need to
+ first get a "registration token" for Google Cloud Messaging from the "InstanceID API.
+ This token is used to identify the instance of the quickstart running on your device.
+ because hey, there must a lot of people out there using the SAME quickstart app.
+
+ For most of the initialization's just find its occurrences to understand its purpose.
+*/
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -47,12 +57,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
+        // This just SETS a broadcastReceiver in order to wait to RECEIVE the registration token
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                // Remove the progressbar we had set (or more precisely set the visibility to GONE)
                 mRegistrationProgressBar.setVisibility(ProgressBar.GONE);
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
+                // Used to check whether this TOKEN has been SENT to server
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
@@ -71,8 +84,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     You might be thinking whats up with this register and unregister in the onResume and onPause
+     well, see to get a registration token for Google Cloud Messaging from the InstanceID API,
+     we launch a service in line 84, now this service gets the GCM Registration Token,
+     but what if the app is no longer in focus, while the progressbar is running say you close the
+     app or minimize the app(onPause), then the broadcastReceiver is "unregistered" because duh, you do
+     stuff like change the textView text in there, so you "register" the broadcastReceiver when the
+     app again comes into focus (onResume)
+    */
+
     @Override
     protected void onResume() {
+        // we reset the broadcastReceiver
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
@@ -80,10 +104,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        // we UNSET the broadcastReceiver we set
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
     }
 
+    // Pretty self explanatory :p
     /**
      * Check the device to make sure it has the Google Play Services APK. If
      * it doesn't, display a dialog that allows users to download the APK from
