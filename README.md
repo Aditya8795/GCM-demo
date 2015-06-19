@@ -1,10 +1,7 @@
-# Google APIs for Mobile: Quickstarts 
+# GCM-demo
+GCM quick start App  from google-services repository
 
-A collection of quickstart samples demonstrating the Google APIs for 
-[Android](https://developers.google.com/android) and [iOS](https://developers.google.com/ios).
+This is the App google made for us to test GCM and I hope to add comments and made minor modifications 
+thus learning how to use the GoogleCloudMessaging API and Android Studio with Gradle..
 
-## How to make contributions?
-Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
-
-## License
-See [LICENSE](LICENSE)
+you can get the set up details from [here](https://developers.google.com/cloud-messaging/android/start)
